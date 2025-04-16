@@ -8,7 +8,7 @@
     <div class='control'>
       <div class="player">
         <div class="p1">
-          <input type="text" name="" id="" placeholder="玩家一">
+          <input v-model="playerName[0]" type="text" name="" id="" placeholder="玩家一">
         </div>
         <div class="score">
           <div>
@@ -20,13 +20,14 @@
           </div>
         </div>
         <div class="p2">
-          <input type="text" name="" id="" placeholder="玩家二">
+          <input v-model="playerName[1]" type="text" name="" id="" placeholder="玩家二">
         </div>
       </div>
       <div class="btn">
         <button @click="reset">重新开局</button>
         <button @click="retract">悔棋</button>
         <button @click="clear">清空比分</button>
+        <button @click="giveUp">认输</button>
       </div>
     </div>
   </div>
@@ -39,6 +40,7 @@ const SIZE = 20;
 const chessArr = reactive(new Array(SIZE).fill(0).map(() => new Array(SIZE).fill(0)));
 const state = ref(1);
 const score = reactive(JSON.parse(localStorage.getItem('score')||'[0,0]'));
+const playerName = reactive(JSON.parse(localStorage.getItem('playerName')||'["",""]'));
 const sequence = reactive([1,2])
 const winner = ref('');
 const rules=[
@@ -57,9 +59,11 @@ const boundary = (x,y)=>{
 // 保存比分
 const save = ()=>{
   localStorage.setItem('score',JSON.stringify(score));
+  localStorage.setItem('playerName',JSON.stringify(playerName));
 }
 const clear = ()=>{
   localStorage.removeItem('score');
+  localStorage.removeItem('playerName');
   score.fill(0);
 }
 
@@ -119,6 +123,13 @@ const retract = ()=>{
   const {x,y} = stepList.pop();
   chessArr[x][y] = 0;
   state.value = (state.value==1)?2:1;
+}
+// 认输
+const giveUp =()=>{
+  winner.value = (state.value==1)?'白棋':'黑棋';
+  let index = sequence.indexOf(state.value);
+  score[index==0?1:0]++;
+  save();
 }
 </script>
 
