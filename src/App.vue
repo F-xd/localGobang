@@ -38,7 +38,7 @@ import { ref, reactive } from 'vue';
 const SIZE = 20;
 const chessArr = reactive(new Array(SIZE).fill(0).map(() => new Array(SIZE).fill(0)));
 const state = ref(1);
-const score = reactive([0,0])
+const score = reactive(JSON.parse(localStorage.getItem('score')||'[0,0]'));
 const sequence = reactive([1,2])
 const winner = ref('');
 const rules=[
