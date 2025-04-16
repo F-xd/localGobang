@@ -147,8 +147,7 @@ const retract = ()=>{
     margin-top: 30px;
     input{
       border: none;
-      width: 210px;
-      padding-left: 20px;
+      width: 100%;
       height: 50px;
       outline: none;
       font-size: 20px;
